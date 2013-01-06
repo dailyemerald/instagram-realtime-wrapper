@@ -28,9 +28,10 @@ app.get '/', (req, res) ->
     evt.on 'publish', (message) ->
         res.write "data: #{JSON.stringify message}\n\n"
     
-app.get '/build', (req, res) ->
-    evt.emit 'publish', '/build called'
-    instagram.buildTagSubscription req.headers.host, 'love', (err, data) ->
+app.get '/build/:tag', (req, res) ->
+    req.send('');
+    evt.emit 'publish', "/build/#{req.params.tag} called"
+    instagram.buildTagSubscription req.headers.host, req.params.tag, (err, data) ->
         evt.emit 'publish', {'type': 'build_result', 'err': err, 'data': data}
 
 app.get '/notify/:name', (req, res) ->

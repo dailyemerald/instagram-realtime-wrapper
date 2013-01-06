@@ -29,11 +29,11 @@ app.get '/', (req, res) ->
         res.write "data: #{JSON.stringify message}\n\n"
     
 app.get '/build/:tag', (req, res) ->
-    req.send('');
-    evt.emit 'publish', "/build/#{req.params.tag} called"
     instagram.buildTagSubscription req.headers.host, req.params.tag, (err, data) ->
         evt.emit 'publish', {'type': 'build_result', 'err': err, 'data': data}
-
+    evt.emit 'publish', "/build/#{req.params.tag} called"
+    res.send ''
+    
 app.get '/notify/:name', (req, res) ->
     
     evt.emit 'publish', {'type': 'info:notify', 'data': req.query}
@@ -48,7 +48,7 @@ app.get '/notify/:name', (req, res) ->
 app.post '/notify/:name', (req, res) ->
     evt.emit 'publish', {'type': 'new_photo', 'name': req.params.name, 'data': req.body, 'query': req.query}
     req.send ''
-    
+
  setInterval ->
     evt.emit 'publish', {'type': 'heartbeat'}
  , 1000*20    

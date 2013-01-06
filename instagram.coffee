@@ -1,5 +1,21 @@
 request = require 'request'
 
+exports.get_recent_url_for = (notification) ->
+    if data.object_type is 'tag'
+        return ""
+    else if data.object_type is 'geo'
+        return ""
+    else
+        return null
+
+exports.delete_all = (callback) ->
+    request.del "https://api.instagram.com/v1/subscriptions?client_secret=#{process.env.CLIENT_SECRET}&object=all&client_id=#{process.env.CLIENT_ID}", (error, response, body) ->
+        callback(error, body)
+
+exports.list_all = (callback) ->
+    request "https://api.instagram.com/v1/subscriptions?client_secret=#{process.env.CLIENT_SECRET}&client_id=#{process.env.CLIENT_ID}", (error, response, body) ->
+        callback(error, body)
+
 exports.buildTagSubscription = (host, tag, callback) ->
     requestObj = {
         method: 'POST',
@@ -14,7 +30,4 @@ exports.buildTagSubscription = (host, tag, callback) ->
         }
     }
     request requestObj, (error, response, body) ->
-        if error is null
-            callback null, body
-        else
-            callback error, null
+        callback error, body

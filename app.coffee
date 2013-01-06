@@ -30,7 +30,7 @@ app.get '/', (req, res) ->
     
 app.get '/build', (req, res) ->
     evt.emit 'publish', '/build called'
-    instagram.buildTagSubscription req.headers.host, 'test', (err, data) ->
+    instagram.buildTagSubscription req.headers.host, 'love', (err, data) ->
         evt.emit 'publish', {'type': 'build_result', 'err': err, 'data': data}
 
 app.get '/notify/:name', (req, res) ->
@@ -46,4 +46,4 @@ app.get '/notify/:name', (req, res) ->
 
  setInterval ->
     evt.emit 'publish', {'type': 'heartbeat'}
- , 1000*5      
+ , 1000*20    

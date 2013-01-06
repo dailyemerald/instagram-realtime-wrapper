@@ -1,9 +1,9 @@
 request = require 'request'
 
 exports.get_recent_url_for = (notification) ->
-    if data.object_type is 'tag'
+    if notification.object_type is 'tag'
         return ""
-    else if data.object_type is 'geo'
+    else if notification.object_type is 'geo'
         return ""
     else
         return null

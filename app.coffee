@@ -70,13 +70,13 @@ app.get '/delete_all', (req, res) ->
 
 evt.on 'get_recent', (notification) ->
     console.log "get_recent: #{notification}"
-    url = instagram.get_recent_url_for(notification)
+    #url = instagram.get_recent_url_for(notification)
     #if url_err
     #    console.log "url_err: #{url_err}" 
     #    return
 
-    request url, (err, response, body) ->    
-        publish {'err': err, 'response': response, 'body': body}
+    #request url, (err, response, body) ->    
+    #    publish {'err': err, 'response': response, 'body': body}
 
  setInterval ->
     publish {'type': 'heartbeat'}

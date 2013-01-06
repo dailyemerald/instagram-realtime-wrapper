@@ -26,7 +26,7 @@ app.get '/', (req, res) ->
         'Connection': 'keep-alive'
     }
     evt.on 'publish', (message) ->
-        res.write "#{JSON.stringify message}\n"
+        res.write "data: #{JSON.stringify message}\n\n"
     
 app.get '/build', (req, res) ->
     evt.emit 'publish', '/build called'
@@ -43,6 +43,9 @@ app.get '/notify/:name', (req, res) ->
     else
         console.log "#{req.params.name}: #{req.body}"
         evt.emit 'publish', req.body
+
+app.post '/notify/:name', (req, res) ->
+    evt.emit 'publish', {'type': 'new_photo', 'name': req.params.name, 'data': req.body, 'query': req.query}
 
  setInterval ->
     evt.emit 'publish', {'type': 'heartbeat'}

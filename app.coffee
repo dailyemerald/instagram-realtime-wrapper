@@ -26,6 +26,7 @@ app.get '/', (req, res) ->
         'Connection': 'keep-alive'
     }
     evt.on 'publish', (message) ->
+        console.log message
         res.write "data: #{JSON.stringify message}\n\n"
     
 app.get '/build/:tag', (req, res) ->

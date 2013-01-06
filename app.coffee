@@ -69,7 +69,7 @@ app.get '/delete_all', (req, res) ->
         publish {'error': error, 'data': data} 
 
 evt.on 'get_recent', (notification) ->
-    console.log "get_recent: #{data}"
+    console.log "get_recent: #{notification}"
     url = instagram.get_recent_url_for(notification)
     #if url_err
     #    console.log "url_err: #{url_err}" 

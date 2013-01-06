@@ -1,10 +1,18 @@
 express = require 'express'
 events = require 'events'
+request = require 'request'
 http = require 'http'
 instagram = require './instagram'
 port = process.env.PORT || 5000
 app = express()
 server = app.listen port
+
+app.configure ->
+  app.use express.static(__dirname + "/public")
+  app.use express.bodyParser()
+  app.use express.cookieParser()
+  app.use express.methodOverride()
+  app.use express.errorHandler({showStack: true, dumpExceptions: true})
 
 evt = new events.EventEmitter();
 
@@ -48,11 +56,12 @@ app.get '/notify/:name', (req, res) ->
 
 app.get '/list', (req, res) ->
     request "https://api.instagram.com/v1/subscriptions?client_secret=#{process.env.CLIENT_SECRET}&client_id=#{process.env.CLIENT_ID}", (err, response, body) ->
-        evt.emit 'message', {'err': err, 'response': response, 'body': body}
+        console.log err, body
+        evt.emit 'publish', {'err': err, 'response': response, 'body': body}
     res.send ''
 
 app.post '/notify/:name', (req, res) ->
-    evt.emit 'publish', {'type': 'new_photo', 'name': req.params.name, 'data': req.body, 'query': req.query}
+    evt.emit 'publish', {'type': 'new_photo', 'name': req.params.name, 'data': req.body}
     res.send ''
 
  setInterval ->

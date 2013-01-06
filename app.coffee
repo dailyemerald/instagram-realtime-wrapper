@@ -18,3 +18,10 @@ app.get '/', (req, res) ->
   instagram.buildTagSubscription req.headers.host, 'test', (err, data) ->
       res.write(err+":"+data+'\n');
   
+app.get '/notify/:name', (req, res) ->
+	if req.query and req.query['hub.mode'] is 'subscribe'
+		console.log "Confirming new Instagram real-time subscription for '#{req.params.name}' (query:#{req.query})"
+      	res.send req.query['hub.challenge'] 
+    else
+    	console.log "#{req.params.name}: #{req.body}"
+    	

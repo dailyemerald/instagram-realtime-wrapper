@@ -46,6 +46,11 @@ app.get '/notify/:name', (req, res) ->
         console.log "#{req.params.name}: #{req.body}"
         evt.emit 'publish', req.body
 
+app.get '/list', (req, res) ->
+    request "https://api.instagram.com/v1/subscriptions?client_secret=#{process.env.CLIENT_SECRET}&client_id=#{process.env.CLIENT_ID}", (err, response, body) ->
+        evt.emit 'message', {'err': err, 'response': response, 'body': body}
+    res.send ''
+
 app.post '/notify/:name', (req, res) ->
     evt.emit 'publish', {'type': 'new_photo', 'name': req.params.name, 'data': req.body, 'query': req.query}
     res.send ''

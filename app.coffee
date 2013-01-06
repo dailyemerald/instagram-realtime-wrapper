@@ -47,7 +47,8 @@ app.get '/notify/:name', (req, res) ->
 
 app.post '/notify/:name', (req, res) ->
     evt.emit 'publish', {'type': 'new_photo', 'name': req.params.name, 'data': req.body, 'query': req.query}
-
+    req.send ''
+    
  setInterval ->
     evt.emit 'publish', {'type': 'heartbeat'}
  , 1000*20    
